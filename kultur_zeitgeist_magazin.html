@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIE PERSPEKTIVE — Magazin für deutsche Gesellschaft & Wandel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display (Serif) & Inter (Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        paper: {
+                            50: '#FCFBF7',
+                            100: '#F7F4EE',
+                            200: '#EFEBE1',
+                            300: '#E2DCCF',
+                            800: '#1C1A17',
+                            900: '#121110'
+                        },
+                        ink: {
+                            DEFAULT: '#1A1816',
+                            muted: '#5C564E',
+                            light: '#8C8479'
+                        },
+                        accent: {
+                            burgundy: '#7A2021',
+                            ochre: '#B87D2B',
+                            sage: '#4A6B5D'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Newsreader', 'Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::selection {
+            background-color: #7A2021;
+            color: #FCFBF7;
+        }
+        .editorial-border {
+            border-color: rgba(28, 26, 23, 0.15);
+        }
+        .dark .editorial-border {
+            border-color: rgba(226, 220, 207, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-paper-100 text-ink dark:bg-paper-900 dark:text-paper-100 font-sans antialiased min-h-screen transition-colors duration-300 flex flex-col">
+
+    <!-- Header / Masthead -->
+    <header class="border-b-2 editorial-border pt-6 pb-4 px-4 sm:px-8 max-w-7xl mx-auto w-full">
+        <!-- Top bar info -->
+        <div class="flex justify-between items-center text-xs tracking-widest text-ink-muted dark:text-paper-300 uppercase pb-4 mb-4 border-b editorial-border">
+            <span>Ausgabe 2026 / 2027</span>
+            <span class="font-serif italic capitalize tracking-normal text-sm hidden md:inline">"Verstehen, was Deutschland bewegt."</span>
+            <span>Berlin &bull; Frankfurt &bull; München</span>
+        </div>
+
+        <!-- Main Title Logo -->
+        <div class="text-center my-4">
+            <a href="#" class="inline-block">
+                <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink dark:text-paper-50 uppercase">
+                    Die Perspektive
+                </h1>
+            </a>
+            <p class="font-serif italic text-sm sm:text-base text-ink-muted dark:text-paper-300 mt-2">
+                Unabhängiges Journal für deutsche Politik, Wirtschaft, Energiewende und Gesellschaft
+            </p>
+        </div>
+
+        <!-- Navigation & Tools -->
+        <div class="mt-8 pt-4 border-t-4 border-black dark:border-paper-100 flex flex-wrap justify-between items-center gap-4">
+            <!-- Nav Categories -->
+            <nav class="flex flex-wrap gap-2 sm:gap-6 text-xs sm:text-sm font-medium tracking-wider uppercase" id="categoryNav">
+                <button onclick="filterCategory('all')" class="cat-btn active py-1 px-3 rounded-full bg-ink text-paper-50 dark:bg-paper-50 dark:text-ink transition">Alle Themen</button>
+                <button onclick="filterCategory('Energiewende')" class="cat-btn py-1 px-3 rounded-full hover:bg-paper-200 dark:hover:bg-paper-800 transition">Energiewende</button>
+                <button onclick="filterCategory('Wirtschaft')" class="cat-btn py-1 px-3 rounded-full hover:bg-paper-200 dark:hover:bg-paper-800 transition">Wirtschaft</button>
+                <button onclick="filterCategory('Politik')" class="cat-btn py-1 px-3 rounded-full hover:bg-paper-200 dark:hover:bg-paper-800 transition">Politik</button>
+                <button onclick="filterCategory('Gesellschaft')" class="cat-btn py-1 px-3 rounded-full hover:bg-paper-200 dark:hover:bg-paper-800 transition">Gesellschaft</button>
+            </nav>
+
+            <!-- Search & Dark mode -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div class="relative flex-grow sm:flex-grow-0">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Artikel suchen..." 
+                           class="w-full sm:w-48 bg-paper-50 dark:bg-paper-800 text-xs sm:text-sm px-3 py-1.5 pl-8 rounded-md border editorial-border focus:outline-none focus:ring-1 focus:ring-accent-burgundy">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-xs text-ink-muted"></i>
+                </div>
+                <button onclick="toggleDarkMode()" title="Design wechseln" class="p-2 rounded-md hover:bg-paper-200 dark:hover:bg-paper-800 text-ink dark:text-paper-100 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-8 py-8">
+        
+        <!-- Featured Article Hero -->
+        <section id="heroSection" class="mb-12 pb-12 border-b editorial-border">
+            <div class="grid md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-4">
+                    <span class="inline-block text-xs font-bold uppercase tracking-widest text-accent-burgundy dark:text-red-400">Leitartikel &bull; Energiewende</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight cursor-pointer hover:text-accent-burgundy transition" onclick="openModal(1)">
+                        Deutschlands Energiewende im Reality-Check: Zwischen hohen Preisen und Industrie-Druck
+                    </h2>
+                    <p class="text-ink-muted dark:text-paper-300 font-serif text-lg leading-relaxed italic">
+                        "Hohe Stromkosten, Netzengpässe und die Debatte um Wasserstoff-Backup: Wie die viertgrößte Volkswirtschaft der Welt ihren grünen Umbau neu justieren muss."
+                    </p>
+                    <div class="flex items-center gap-4 text-xs text-ink-light pt-2">
+                        <span><i class="fa-regular fa-user mr-1"></i> Dr. Felix von Berg</span>
+                        <span><i class="fa-regular fa-clock mr-1"></i> 7 Min. Lesezeit</span>
+                        <span><i class="fa-regular fa-calendar mr-1"></i> Juni 2026</span>
+                    </div>
+                </div>
+                <div class="md:col-span-5">
+                    <div class="bg-paper-200 dark:bg-paper-800 p-6 rounded-lg border editorial-border space-y-4">
+                        <div class="text-xs font-semibold uppercase tracking-wider text-accent-ochre"><i class="fa-solid fa-chart-line mr-2"></i>Kernaussage der Daten</div>
+                        <h3 class="font-serif text-xl font-semibold">Der Strompreis-Zwiespalt</h3>
+                        <p class="text-xs text-ink-muted dark:text-paper-300 leading-relaxed">
+                            Während der Anteil erneuerbarer Energien im Stromnetz auf über 55% steigt, belasten Netzentgelte und Backup-Kapazitäten (Gaskraftwerke) Haushalte und Industrie weiterhin mit überdurchschnittlichen Kosten.
+                        </p>
+                        <div class="space-y-2 pt-2">
+                            <div class="flex justify-between text-xs">
+                                <span>Erneuerbare Energien (2026)</span>
+                                <span class="font-bold">58%</span>
+                            </div>
+                            <div class="w-full bg-paper-300 dark:bg-paper-700 h-2 rounded-full overflow-hidden">
+                                <div class="bg-accent-sage h-full" style="width: 58%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs pt-1">
+                                <span>Ziel für 2030</span>
+                                <span class="font-bold">80%</span>
+                            </div>
+                            <div class="w-full bg-paper-300 dark:bg-paper-700 h-2 rounded-full overflow-hidden">
+                                <div class="bg-accent-ochre h-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <button onclick="openModal(1)" class="w-full mt-4 text-xs font-semibold uppercase tracking-wider py-2.5 bg-ink text-paper-50 dark:bg-paper-50 dark:text-ink rounded hover:opacity-90 transition">
+                            Vollständigen Bericht lesen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Articles Grid -->
+        <section>
+            <div class="flex justify-between items-baseline mb-8 pb-3 border-b-2 border-ink dark:border-paper-100">
+                <h3 class="font-serif text-2xl font-bold uppercase tracking-wide">Aktuelle Analysen & Berichte</h3>
+                <span id="articleCount" class="text-xs text-ink-muted dark:text-paper-300 font-mono">6 Artikel</span>
+            </div>
+
+            <!-- Cards Container -->
+            <div id="articlesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamic Article Cards Generated via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t-2 editorial-border bg-paper-50 dark:bg-paper-950 py-12 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 mb-8 text-sm">
+            <div class="space-y-3">
+                <h4 class="font-serif text-lg font-bold uppercase">Die Perspektive</h4>
+                <p class="text-xs text-ink-muted dark:text-paper-300 leading-relaxed">
+                    Ein unabhängiges digitales Journal für gesellschaftspolitische Analysen, Ökonomie und den Wandel in Deutschland.
+                </p>
+            </div>
+            <div>
+                <h5 class="font-semibold text-xs uppercase tracking-wider mb-3">Rubriken</h5>
+                <ul class="space-y-2 text-xs text-ink-muted dark:text-paper-300">
+                    <li><a href="#" onclick="filterCategory('Energiewende'); return false;" class="hover:underline">Energiewende & Klima</a></li>
+                    <li><a href="#" onclick="filterCategory('Wirtschaft'); return false;" class="hover:underline">Industrie & Standort</a></li>
+                    <li><a href="#" onclick="filterCategory('Politik'); return false;" class="hover:underline">Parteien & Reformen</a></li>
+                    <li><a href="#" onclick="filterCategory('Gesellschaft'); return false;" class="hover:underline">Gen Z & Wohnen</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold text-xs uppercase tracking-wider mb-3">Über das Projekt</h5>
+                <ul class="space-y-2 text-xs text-ink-muted dark:text-paper-300">
+                    <li><a href="#" class="hover:underline">Impressum & Datenschutz</a></li>
+                    <li><a href="#" class="hover:underline">GitHub Repository</a></li>
+                    <li><a href="#" class="hover:underline">Quellen & Methodik</a></li>
+                </ul>
+            </div>
+            <div class="space-y-3">
+                <h5 class="font-semibold text-xs uppercase tracking-wider mb-2">Newsletter abonnieren</h5>
+                <p class="text-xs text-ink-muted dark:text-paper-300">Wöchentliche Briefings direkt in Ihre Inbox.</p>
+                <div class="flex">
+                    <input type="email" id="newsletterEmail" placeholder="Ihre E-Mail..." class="bg-paper-200 dark:bg-paper-800 text-xs px-3 py-2 rounded-l w-full border editorial-border focus:outline-none">
+                    <button onclick="subscribeNewsletter()" class="bg-accent-burgundy text-white px-3 py-2 rounded-r text-xs font-semibold hover:bg-opacity-90">Abonnieren</button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-6 border-t editorial-border text-center text-xs text-ink-light flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>&copy; 2026 DIE PERSPEKTIVE. Hergestellt für wissenschaftliche & journalistische Berichterstattung.</p>
+            <p class="font-serif italic">"Ohne Ziel ist jeder Weg falsch." — Senecas Impulse</p>
+        </div>
+    </footer>
+
+    <!-- Article Modal overlay -->
+    <div id="articleModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4 overflow-y-auto">
+        <div class="bg-paper-50 dark:bg-paper-900 border editorial-border rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 sm:p-10 my-8">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-paper-200 dark:bg-paper-800 flex items-center justify-center text-ink dark:text-paper-100 hover:bg-accent-burgundy hover:text-white transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-ink text-paper-50 dark:bg-paper-50 dark:text-ink px-4 py-3 rounded-lg text-xs font-medium shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        Notification Message
+    </div>
+
+    <!-- JavaScript Data & Interactivity -->
+    <script>
+        // Article Database based on Notebook Analysis
+        const articles = [
+            {
+                id: 1,
+                category: "Energiewende",
+                title: "Deutschlands Energiewende im Reality-Check: Zwischen hohen Preisen und Industrie-Druck",
+                excerpt: "Nach dem Ausstieg aus der Kernenergie und der Neuausrichtung der Gasimporte steht das Land vor der Herausforderung, Stromkosten zu senken und gleichzeitig Versorgungssicherheit zu garantieren.",
+                author: "Dr. Felix von Berg",
+                date: "05. Juni 2026",
+                readTime: "7 Min.",
+                content: `
+                    <span class="text-xs uppercase font-bold text-accent-burgundy tracking-widest">Analyse &bull; Energiewende</span>
+                    <h1 class="font-serif text-3xl font-bold my-4">Deutschlands Energiewende im Reality-Check</h1>
+                    <div class="text-xs text-ink-light mb-6 pb-4 border-b editorial-border flex gap-4">
+                        <span>Von Dr. Felix von Berg</span> &bull; <span>Veröffentlicht am 05. Juni 2026</span>
+                    </div>
+                    <div class="prose dark:prose-invert max-w-none text-sm space-y-4 font-serif leading-relaxed text-ink dark:text-paper-200">
+                        <p class="text-base font-semibold italic text-ink-muted dark:text-paper-300">
+                            Die Transformation des deutschen Energiesystems erreicht einen kritischen Wendepunkt. Hohe Strompreise für Industrie und Privathaushalte setzen die Politik unter Druck.
+                        </p>
+                        <h3 class="font-sans font-bold text-base text-ink dark:text-paper-50 pt-2">1. Der Zustand des Strommarktes</h3>
+                        <p>
+                            Seit der Abschaltung der letzten Kernkraftwerke und dem abrupten Ende günstiger russischer Pipeline-Gaslieferungen zahlt die deutsche Wirtschaft im europäischen Vergleich überdurchschnittlich hohe Energiepreise. Zwar wächst der Anteil von Wind- und Solarstrom stetig, doch die Netzentgelte für den Ausbau der Nord-Süd-Trassen belasten den Endpreis enorm.
+                        </p>
+                        <h3 class="font-sans font-bold text-base text-ink dark:text-paper-50 pt-2">2. Die Strategie der Gas- und Wasserstoff-Backups</h3>
+                        <p>
+                            Um die Fluktuationsrisiken erneuerbarer Energien ("Dunkelflaute") abzufedern, plant das Wirtschaftsministerium den Aufbau neuer wasserstofffähiger Gaskraftwerke (5 bis 10 GW). Diese sollen als Reserve dienen, wenn Wind und Sonne ausfallen.
+                        </p>
+                        <blockquote class="border-l-4 border-accent-burgundy pl-4 my-4 italic text-ink-muted dark:text-paper-300">
+                            "Ohne bezahlbare und verlässliche Energie droht der Deindustrialisierungsprozess in Schlüsselbranchen wie Chemie und Stahl irreversibel zu werden." — DIHK-Stellungnahme
+                        </blockquote>
+                        <h3 class="font-sans font-bold text-base text-ink dark:text-paper-50 pt-2">3. Ausblick & Handlungsbedarf</h3>
+                        <p>
+                            Eine Senkung der Stromsteuer sowie eine Reform der Entgeltsysteme stehen im Zentrum der politischen Debatte. Die entscheidende Frage bleibt: Kann Deutschland seinen Klimaschutzanspruch halten, ohne die globale Wettbewerbsfähigkeit einzubüßen?
+                        </p>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                category: "Wirtschaft",
+                title: "Der 34-Punkte-Plan von Kanzler Merz: Hoffnung oder Härteprüfung?",
+                excerpt: "Steuerreformen, Kürzung von Krankmeldungen per Telefon und Anreize für längere Lebensarbeitszeiten: Die Bundesregierung will den Wirtschaftsstandort neu beleben.",
+                author: "Sabine Neumann",
+                date: "02. Juli 2026",
+                readTime: "5 Min.",
+                content: `
+                    <span class="text-xs uppercase font-bold text-accent-ochre tracking-widest">Wirtschaftspolitik</span>
+                    <h1 class="font-serif text-3xl font-bold my-4">Der 34-Punkte-Plan zur Wende</h1>
+                    <div class="text-xs text-ink-light mb-6 pb-4 border-b editorial-border flex gap-4">
+                        <span>Von Sabine Neumann</span> &bull; <span>02. Juli 2026</span>
+                    </div>
+                    <div class="prose dark:prose-invert text-sm space-y-4 font-serif leading-relaxed text-ink dark:text-paper-200">
+                        <p>
+                            Bundeskanzler Friedrich Merz stellte ein umfassendes Paket vor, um die Stagnation der deutschen Wirtschaft zu durchbrechen. Das Paket umfasst unter anderem:
+                        </p>
+                        <ul class="list-disc pl-5 font-sans text-xs space-y-2 my-4">
+                            <li><strong>Steuerliche Entlastung:</strong> Bis zu 600 € Entlastung für Doppelverdiener-Familien mit Kindern.</li>
+                            <li><strong>Spitzensteuersatz:</strong> Anhebung auf 47% für Jahreseinkommen ab 280.000 € zur Gegenfinanzierung.</li>
+                            <li><strong>Arbeitsmarkt-Flexibilisierung:</strong> Abschaffung der telefonischen Krankschreibung ab Tag 1 und Befristungsmöglichkeiten bis zu 48 Monate.</li>
+                            <li><strong>Deutschlandfonds:</strong> Fokus auf Investitionen in Schlüsseltechnologien, Batterieproduktion und KI.</li>
+                        </ul>
+                        <p>
+                            Kritik kommt sowohl von Gewerkschaften, die einen sozialen Kahlschlag befürchten, als auch von Wirtschaftsverbänden, denen die Deregulierung nicht weit genug geht.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                category: "Gesellschaft",
+                title: "Gen Z regelt: Wenn Zukunftsangst in Straßenproteste umschlägt",
+                excerpt: "In Frankfurt, Berlin und Hamburg gingen Zehntausende Jugendliche auf die Straße. Im Fokus: Wohnungsnot, Bildungsmangel und die Debatte um die Wehrpflicht.",
+                author: "Jonas Richter",
+                date: "01. November 2026",
+                readTime: "6 Min.",
+                content: `
+                    <span class="text-xs uppercase font-bold text-accent-sage tracking-widest">Gesellschaft & Jugend</span>
+                    <h1 class="font-serif text-3xl font-bold my-4">Gen Z regelt: Jugend im Widerstand</h1>
+                    <div class="text-xs text-ink-light mb-6 pb-4 border-b editorial-border flex gap-4">
+                        <span>Von Jonas Richter</span> &bull; <span>01. November 2026</span>
+                    </div>
+                    <div class="prose dark:prose-invert text-sm space-y-4 font-serif leading-relaxed text-ink dark:text-paper-200">
+                        <p>
+                            Unter dem Motto "Gen Z regelt" haben bundesweite Demonstrationen die politische Debatte erschüttert. Neben friedlichen Märschen kam es in Frankfurt und Berlin vereinzelt zu Ausschreitungen.
+                        </p>
+                        <p>
+                            Die Hauptforderungen der Bewegung betreffen drei Kernbereiche:
+                        </p>
+                        <ol class="list-decimal pl-5 font-sans text-xs space-y-2">
+                            <li><strong>Bezahlbarer Wohnraum:</strong> Angesichts von über 800.000 fehlenden Wohnungen in Großstädten fordern Studenten und Auszubildende Mietpreisstopps.</li>
+                            <li><strong>Neuausrichtung der Bildungsausgaben:</strong> Investitionen in marode Schulen statt Etaterhöhungen für Verteidigung.</li>
+                            <li><strong>Nein zur Wehrpflicht:</strong> Strikte Ablehnung von Verpflichtungsmodellen im Zuge der neuen Sicherheitspolitik.</li>
+                        </ol>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                category: "Politik",
+                title: "Nach den Landtagswahlen im Osten: Die Erschütterung des Parteiensystems",
+                excerpt: "Mit historischen Wahlergebnissen der AfD in Sachsen-Anhalt geraten die etablierten Parteien unter Zugzwang. Die Brandmauer-Debatte flammt erneut auf.",
+                author: "Dr. Elena Weber",
+                date: "14. September 2026",
+                readTime: "8 Min.",
+                content: `
+                    <span class="text-xs uppercase font-bold text-accent-burgundy tracking-widest">Politik & Wahlen</span>
+                    <h1 class="font-serif text-3xl font-bold my-4">Politische Tektonik im Osten</h1>
+                    <div class="text-xs text-ink-light mb-6 pb-4 border-b editorial-border flex gap-4">
+                        <span>Von Dr. Elena Weber</span> &bull; <span>14. September 2026</span>
+                    </div>
+                    <div class="prose dark:prose-invert text-sm space-y-4 font-serif leading-relaxed text-ink dark:text-paper-200">
+                        <p>
+                            Das Resultat der Landtagswahl in Sachsen-Anhalt mit 43,8% für die AfD stellt das deutsche Nachkriegsparteiensystem vor eine Zerreißprobe. 
+                        </p>
+                        <p>
+                            Politikwissenschaftler führen diesen Wählerzuwachs auf eine Mischung aus Unzufriedenheit mit der Energiepolitik, Unsicherheit durch die Inflation sowie Vorbehalte gegenüber Migrationsfragen zurück. Während die Regierungsbildung in den Ländern extrem kompliziert wird, steigt auch in Berlin der Druck auf die Große Koalition.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                category: "Wirtschaft",
+                title: "Die Sorge vor dem Deindustrialisierungssyndrom: BASF, Bosch & Co.",
+                excerpt: "Traditionsunternehmen verlagern Investitionen ins Ausland. Ist der Industriestandort Deutschland noch zu retten?",
+                author: "Sabine Neumann",
+                date: "18. Oktober 2026",
+                readTime: "5 Min.",
+                content: `
+                    <span class="text-xs uppercase font-bold text-accent-ochre tracking-widest">Industrie & Zukunft</span>
+                    <h1 class="font-serif text-3xl font-bold my-4">Wettbewerb unter neuem Druck</h1>
+                    <div class="text-xs text-ink-light mb-6 pb-4 border-b editorial-border flex gap-4">
+                        <span>Von Sabine Neumann</span> &bull; <span>18. Oktober 2026</span>
+                    </div>
+                    <div class="prose dark:prose-invert text-sm space-y-4 font-serif leading-relaxed text-ink dark:text-paper-200">
+                        <p>
+                            Die Meldungen über Stellenabbau in der Chemie- und Automobilzulieferindustrie häufen sich. Höhere Energiepreise, bürokratische Auflagen und der Fachkräftemangel veranlassen viele DAX-Konzerne, neue Werke vorzugsweise in Nordamerika oder Asien zu errichten.
+                        </p>
+                        <p>
+                            Experten plädieren für ein schnelles Entlastungssignal bei Unternehmenssteuern und eine gezielte Einwanderungsstrategie für qualifizierte Arbeitskräfte.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                id: 6,
+                category: "Gesellschaft",
+                title: "Wohnungsnot in Universitätsstädten: Der Traum vom eigenen Raum",
+                excerpt: "Warum der Mangel an bezahlbarem Wohnraum längst die Mittelschicht erreicht hat und das gesellschaftliche Vertrauen untergräbt.",
+                author: "Jonas Richter",
+                date: "20. November 2026",
+                readTime: "4 Min.",
+                content: `
+                    <span class="text-xs uppercase font-bold text-accent-sage tracking-widest">Soziales & Wohnen</span>
+                    <h1 class="font-serif text-3xl font-bold my-4">Krise auf dem Wohnungsmarkt</h1>
+                    <div class="text-xs text-ink-light mb-6 pb-4 border-b editorial-border flex gap-4">
+                        <span>Von Jonas Richter</span> &bull; <span>20. November 2026</span>
+                    </div>
+                    <div class="prose dark:prose-invert text-sm space-y-4 font-serif leading-relaxed text-ink dark:text-paper-200">
+                        <p>
+                            Ein Dach über dem Kopf wird in Städten wie Berlin, München oder Hamburg zunehmend zum Luxusgut. Hohe Zinsen und gestiegene Baukosten haben den Neubau fast zum Erliegen gebracht. 
+                        </p>
+                        <p>
+                            Die sozialen Folgen sind spürbar: Längere Pendelzeiten, steigende Mietbelastungsquoten und Verdrängungseffekte prägen das Stadtbild.
+                        </p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        // Render Articles Grid
+        function renderArticles(filterText = '') {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+
+            const filtered = articles.filter(art => {
+                const matchesCat = currentCategory === 'all' || art.category === currentCategory;
+                const matchesSearch = art.title.toLowerCase().includes(filterText.toLowerCase()) || 
+                                      art.excerpt.toLowerCase().includes(filterText.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            document.getElementById('articleCount').innerText = `${filtered.length} Artikel`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-ink-muted dark:text-paper-300 font-serif italic">
+                        Keine Artikel zu diesem Thema gefunden.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(art => {
+                const card = document.createElement('article');
+                card.className = "bg-paper-50 dark:bg-paper-800 p-6 rounded-lg border editorial-border flex flex-col justify-between hover:shadow-lg transition group cursor-pointer";
+                card.onclick = () => openModal(art.id);
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold uppercase tracking-wider text-accent-burgundy dark:text-red-400">${art.category}</span>
+                            <span class="text-ink-light font-mono">${art.readTime}</span>
+                        </div>
+                        <h4 class="font-serif text-xl font-bold group-hover:text-accent-burgundy transition leading-snug">
+                            ${art.title}
+                        </h4>
+                        <p class="text-xs text-ink-muted dark:text-paper-300 line-clamp-3 leading-relaxed">
+                            ${art.excerpt}
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-4 border-t editorial-border flex justify-between items-center text-xs text-ink-light">
+                        <span>${art.author}</span>
+                        <span>${art.date}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Category Filter
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('#categoryNav button').forEach(btn => {
+                btn.classList.remove('bg-ink', 'text-paper-50', 'dark:bg-paper-50', 'dark:text-ink');
+            });
+            event.target.classList.add('bg-ink', 'text-paper-50', 'dark:bg-paper-50', 'dark:text-ink');
+            renderArticles(document.getElementById('searchInput').value);
+        }
+
+        // Search Input Handler
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            renderArticles(query);
+        }
+
+        // Open Modal View
+        function openModal(id) {
+            const art = articles.find(a => a.id === id);
+            if (!art) return;
+            document.getElementById('modalContent').innerHTML = art.content;
+            document.getElementById('articleModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Modal View
+        function closeModal() {
+            document.getElementById('articleModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Toggle Dark/Light Mode
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        // Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Newsletter Subscription Mockup
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletterEmail').value;
+            if (email && email.includes('@')) {
+                showToast("Vielen Dank! Sie wurden erfolgreich zum Newsletter angemeldet.");
+                document.getElementById('newsletterEmail').value = '';
+            } else {
+                showToast("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+            }
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            renderArticles();
+        };
+    </script>
+</body>
+</html>
